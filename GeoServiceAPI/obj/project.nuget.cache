@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "5dAjx5dk365XGPyLUxlpzw2hkYmlwSAUuY505M2dXsQFHn1C9vGO/PDxmTHpCqGSL2oes/PSU6ggq8n5t4PLUg==",
+  "dgSpecHash": "Q1chvLjpd0Ie5olPqHzVVKMoLx8/hxGO4L528YnUYUQeLSzoAwkeEgTDXpPFzFdnM7JacVFwQmD6TXsPpDNMpQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Eigenaar\\GeoService\\GeoServiceAPI\\GeoServiceAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Eigenaar\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.0\\microsoft.aspnetcore.jsonpatch.6.0.0.nupkg.sha512",
+    "C:\\Users\\Eigenaar\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Eigenaar\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\Eigenaar\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Eigenaar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Eigenaar\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
     "C:\\Users\\Eigenaar\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
     "C:\\Users\\Eigenaar\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
