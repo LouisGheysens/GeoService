@@ -90,8 +90,8 @@ namespace GeoServiceTestLayer {
                 countries, item => item.Name.Contains("Belgium")
                 );
 
-            var exc = Assert.Throws<CountryException>(() => c.removeCountry(countryOne);
-            //Assert.Equal()
+            var exc = Assert.Throws<CountryException>(() => c.removeCountry(countryOne));
+            Assert.Equal("Continent: removeCountry - country doesn't exist", exc.Message);
         }
 
 
