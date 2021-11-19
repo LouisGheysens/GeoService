@@ -54,23 +54,44 @@ namespace GeoServiceTestLayer {
 
         [Fact]
         public void Test_removeCountry_Succeed() {
-            //ADD Values
             List<Country> countries = new List<Country>();
             Continent c = new Continent("South-America");
             Country countryOne = new Country("Mexico", 2345, 4567, c);
             c.addCountry(countryOne);
-
-
-            //Delete Values
             c.removeCountry(countryOne);
-
             Assert.Equal(0, c.Countries.Count);
 
         }
 
-        [Fact]
-        public void Test_RemoveCountry_NotSucceed() {
+        [Theory]
+        [InlineData(null)]
+        public void Test_RemoveCountry_NotSucceed(string country) {
+            List<Country> countries = new List<Country>();
+            Continent c = new Continent("South-America");
+            Country countryOne = new Country(country, 2345, 4567, c);
+            c.addCountry(countryOne);
+            c.removeCountry(countryOne);
+            var exc = Assert.Throws<CountryException>(() => c.removeCountry(countryOne));
+            Assert.Equal("Continent: removeCountry - country is null", exc.Message);
 
+
+        }
+
+        [Theory]
+        [InlineData("France")]
+        [InlineData("Spain")]
+        [InlineData("Letvia")]
+        public void Test_RemoveCountry_Country_Doesnt_Exist(string country) {
+            List<Country> countries = new List<Country>();
+            Continent c = new Continent("Europe");
+            Country countryOne = new Country(country, 2345, 4567, c);
+
+            Assert.Collection(
+                countries, item => item.Name.Contains("Belgium")
+                );
+
+            var exc = Assert.Throws<CountryException>(() => c.removeCountry(countryOne);
+            //Assert.Equal()
         }
 
 
