@@ -1,9 +1,10 @@
 ﻿using System;
+using static System.Console;
 
 namespace GeoServiceAPP {
     class Program {
         static void Main(string[] args) {
-            Console.WriteLine("Hello World!");
+            WriteLine("Hello World!");
         }
     }
 }
