@@ -14,15 +14,11 @@ namespace GeoServiceTestLayer {
             Assert.Equal("Louis", city.Name);
         }
 
-        [Theory]
-        [InlineData(" ")]
-        [InlineData("")]
-        [InlineData(null)]
-        public void Test_setName_InValid(string name) {
+        [Fact]
+        public void Test_setName_InValid() {
             Continent cont = new Continent("Europe");
             Country country = new Country("Belgium", 23000, 4444, cont);
-            City city = new City(name, country, 23455);
-            var exc = Assert.Throws<CityException>(() => city.setName(name));
+            var exc = Assert.Throws<CityException>(() => new City(null, country, 1235));
             Assert.Equal("City: setName - name is null", exc.Message);
         }
 
@@ -35,13 +31,11 @@ namespace GeoServiceTestLayer {
             Assert.Equal(23455, city.Population);
         }
 
-        [Theory]
-        [InlineData(0)]
-        public void Test_setPopulation_InValid(int population) {
+        [Fact]
+        public void Test_setPopulation_InValid() {
             Continent cont = new Continent("Europe");
             Country country = new Country("Belgium", 23000, 4444, cont);
-            City city = new City("Louis", country, population);
-            var exc = Assert.Throws<CityException>(() => city.setPopulation(population));
+            var exc = Assert.Throws<CityException>(() => new City("Antwerp", country, -1));
             Assert.Equal("City: setPopulation - population can't be lower than zero", exc.Message);
         }
     }

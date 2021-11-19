@@ -34,19 +34,18 @@ namespace GeoServiceTestLayer {
             c.addCountry(country);
             Assert.Contains(country, c.Countries);
             Country CountryOne = new Country("Cuba", 3456, 1289, c);
-            c.addCountry(country);
+            c.addCountry(CountryOne);
             Assert.Contains(CountryOne, c.Countries);
             Assert.Equal(2, c.Countries.Count);
         }
 
-        [Theory]
-        [InlineData(null)]
-        public void Test_add_InValidValue_ToCountryCollection(string country) {
+        [Fact]
+        public void Test_add_InValidValue_ToCountryCollection() {
             List<Country> countries = new List<Country>();
             Continent c = new Continent("South-America");
-            Country countryOne = new Country(country, 2345, 4567, c);
+            Country countryOne = new Country("Peru", 2345, 4567, c);
             c.addCountry(countryOne);
-            var exc = Assert.Throws<ContinentException>(() => c.addCountry(countryOne));
+            var exc = Assert.Throws<ContinentException>(() => new Country("Peru", 2345, 4567, c));
             Assert.Equal("Continent: addCountry - country is null", exc.Message);
             Assert.Equal(0, c.Countries.Count);
         }
@@ -63,18 +62,15 @@ namespace GeoServiceTestLayer {
 
         }
 
-        [Theory]
-        [InlineData(null)]
-        public void Test_RemoveCountry_NotSucceed(string country) {
+        [Fact]
+        public void Test_RemoveCountry_NotSucceed() {
             List<Country> countries = new List<Country>();
             Continent c = new Continent("South-America");
-            Country countryOne = new Country(country, 2345, 4567, c);
+            Country countryOne = new Country(null, 2345, 4567, c);
             c.addCountry(countryOne);
             c.removeCountry(countryOne);
-            var exc = Assert.Throws<CountryException>(() => c.removeCountry(countryOne));
+            var exc = Assert.Throws<CountryException>(() => new Country(null, 2345, 4567, c));
             Assert.Equal("Continent: removeCountry - country is null", exc.Message);
-
-
         }
 
         [Theory]

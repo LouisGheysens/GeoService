@@ -15,7 +15,6 @@ C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoService
 C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.AssemblyInfoInputs.cache
 C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.AssemblyInfo.cs
 C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.csproj.CoreCompileInputs.cache
-C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.csproj.CopyComplete
 C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.dll
 C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\ref\GeoServiceBusinessLayer.dll
 C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.pdb

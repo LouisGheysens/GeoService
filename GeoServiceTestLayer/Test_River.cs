@@ -19,12 +19,10 @@ namespace GeoServiceTestLayer {
 
         }
 
-        [Theory]
-        [InlineData(null)]
-        public void Test_setName_Invalid(string name) {
+        [Fact]
+        public void Test_setName_Invalid() {
             List<Country> countries = new List<Country>();
-            River river = new(name, 12, countries);
-            var exc = Assert.Throws<RiverException>(() => river.setName(name));
+            var exc = Assert.Throws<RiverException>(() => new River(null, 12, countries));
             Assert.Equal("River: setName - Name is empty" ,exc.Message);
         }
 
@@ -37,13 +35,10 @@ namespace GeoServiceTestLayer {
             Assert.Equal(12, river.Length);
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void Test_setLength_Invalid(int length) {
+        [Fact]
+        public void Test_setLength_Invalid() {
             List<Country> countries = new List<Country>();
-            River river = new("Kaukasus", 12, countries);
-            var exc = Assert.Throws<RiverException>(() => river.setLength(length));
+            var exc = Assert.Throws<RiverException>(() => new River("Kaukasus", -1, countries));
             Assert.Equal("River: setLength - Length is lower or is null", exc.Message);
         }
 

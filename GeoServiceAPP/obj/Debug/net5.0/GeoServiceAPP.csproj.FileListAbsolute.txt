@@ -1,0 +1,16 @@
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\bin\Debug\net5.0\GeoServiceAPP.exe
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\bin\Debug\net5.0\GeoServiceAPP.deps.json
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\bin\Debug\net5.0\GeoServiceAPP.runtimeconfig.json
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\bin\Debug\net5.0\GeoServiceAPP.runtimeconfig.dev.json
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\bin\Debug\net5.0\GeoServiceAPP.dll
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\bin\Debug\net5.0\ref\GeoServiceAPP.dll
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\bin\Debug\net5.0\GeoServiceAPP.pdb
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.csproj.AssemblyReference.cache
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.AssemblyInfoInputs.cache
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.AssemblyInfo.cs
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.csproj.CoreCompileInputs.cache
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.dll
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\ref\GeoServiceAPP.dll
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.pdb
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.genruntimeconfig.cache

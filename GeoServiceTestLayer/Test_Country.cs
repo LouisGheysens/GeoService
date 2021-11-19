@@ -48,9 +48,9 @@ namespace GeoServiceTestLayer {
         [Fact]
         public void Test_setSurface_Valid() {
             Continent continenten = new Continent("Asia");
-            Country country = new Country("China", 1113, 0, continenten);
-            country.setPopulation(0);
-            Assert.Equal(0, country.Surface);
+            Country country = new Country("China", 1113, -1, continenten);
+            country.setSurface(-1);
+            Assert.Equal(-1, country.Surface);
         }
 
         [Theory]

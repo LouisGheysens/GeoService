@@ -1,0 +1,11 @@
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\bin\Debug\net5.0\GeoServiceDataLayer.deps.json
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\bin\Debug\net5.0\GeoServiceDataLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\bin\Debug\net5.0\ref\GeoServiceDataLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\bin\Debug\net5.0\GeoServiceDataLayer.pdb
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.AssemblyInfoInputs.cache
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.AssemblyInfo.cs
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.csproj.CoreCompileInputs.cache
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\ref\GeoServiceDataLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.pdb
