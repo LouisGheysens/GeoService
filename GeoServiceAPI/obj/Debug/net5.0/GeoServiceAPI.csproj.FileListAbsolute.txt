@@ -28,3 +28,4 @@ C:\Users\Eigenaar\GeoService\GeoServiceAPI\obj\Debug\net5.0\ref\GeoServiceAPI.dl
 C:\Users\Eigenaar\GeoService\GeoServiceAPI\obj\Debug\net5.0\GeoServiceAPI.pdb
 C:\Users\Eigenaar\GeoService\GeoServiceAPI\obj\Debug\net5.0\GeoServiceAPI.genruntimeconfig.cache
 C:\Users\Eigenaar\GeoService\GeoServiceAPI\obj\Debug\net5.0\GeoServiceAPI.csproj.CopyComplete
+C:\Users\Eigenaar\GeoService\GeoServiceAPI\obj\Debug\net5.0\GeoServiceAPI.csproj.AssemblyReference.cache
