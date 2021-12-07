@@ -5,38 +5,57 @@ using Xunit;
 
 namespace GeoServiceTestLayer {
     public class Test_City {
-        [Fact]
-        public void Test_setName_Valid() {
-            Continent cont = new Continent("Europe");
-            Country country = new Country("Belgium", 23000, 4444, cont);
-            City city = new City("Louis", country, 23455);
-            city.setName("Louis");
-            Assert.Equal("Louis", city.Name);
+
+        //Help methodes
+        private City GetStandardCity() {
+            string cityName = "testCity";
+            int population = 35000;
+            Continent continent = new Continent("testContinent");
+            Country country = new Country("testCountry", 40000, 10, continent);
+            City city = new City(cityName, population, country, true);
+
+            return city;
+        }
+
+        private Country GetStandardCountry() {
+            Continent continent = new Continent("testContinent");
+            Country country = new Country("testCountry", 40000, 10, continent);
+            return country;
         }
 
         [Fact]
-        public void Test_setName_InValid() {
-            Continent cont = new Continent("Europe");
-            Country country = new Country("Belgium", 23000, 4444, cont);
-            var exc = Assert.Throws<CityException>(() => new City(null, country, 1235));
-            Assert.Equal("City: setName - name is null", exc.Message);
+        private void Test_City_Data_Succeed() {
+            string name = "Olsene";
+            int population = 35000;
+            Continent c = new Continent("Europe");
+            Country ctry = new Country("Belgium", 40000, 10, c);
+            City city = new City(name, population, ctry, true);
+
+            Assert.True(city.Name == name, "The name of the city was not correct");
+            Assert.True(city.Population == population, "The population of the city was not correct");
+            Assert.True(city.Country.Equals(ctry), "The country of the city was not correct");
+            Assert.True(ctry.GetCities().Contains(city), "The country did not contain the city");
+            Assert.True(ctry.GetCapitals().Contains(city), "The country's capitals did not contain the city");
+            Assert.True(city.Capital == true, "The city did not show it was a capital");
         }
 
         [Fact]
-        public void Test_setPopulation_Valid() {
-            Continent cont = new Continent("Europe");
-            Country country = new Country("Belgium", 23000, 4444, cont);
-            City city = new City("Louis", country, 23455);
-            city.setPopulation(23455);
-            Assert.Equal(23455, city.Population);
+        public void Test_PopulationLessThanZero_ShouldThrowException() {
+            Country country = GetStandardCountry();
+            Assert.Throws<CityException>(() => new City("Zulte", -1, country, false));
         }
 
         [Fact]
-        public void Test_setPopulation_InValid() {
-            Continent cont = new Continent("Europe");
-            Country country = new Country("Belgium", 23000, 4444, cont);
-            var exc = Assert.Throws<CityException>(() => new City("Antwerp", country, -1));
-            Assert.Equal("City: setPopulation - population can't be lower than zero", exc.Message);
+        public void Test_PopulationIsZero_ShouldThrowException() {
+            Country country = GetStandardCountry();
+            Assert.Throws<CityException>(() => new City("Zulte", 0, country, false));
         }
+
+        [Fact]
+        public void Test_CountryNullValue_ShouldThrowException() {
+             Assert.Throws<CityException>(() => new City("Zulte", 49000, null, false));
+        }
+
+
     }
 }

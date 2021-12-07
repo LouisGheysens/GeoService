@@ -1,6 +1,7 @@
 ﻿using GeoServiceBusinessLayer.Exceptions;
 using GeoServiceBusinessLayer.Interfaces;
 using GeoServiceBusinessLayer.Models;
+using GeoServiceDataLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,78 +12,60 @@ using System.Threading.Tasks;
 namespace GeoServiceDataLayer.Repositories {
     public class ContinentRepository : IContinentRepository {
 
-        protected DataContext context;
+        protected CountryContext context;
 
-        public ContinentRepository(DataContext context) {
+        public ContinentRepository(CountryContext context) {
             this.context = context;
         }
 
+        public Continent AddContinent(Continent continent) {
+            DTContinent dt = DataConverter.ConvertContinentToContinentData(continent);
+            context.Continents.Add(dt);
+            context.SaveChanges();
+            return DataConverter.ConvertContinentDataToContinent(dt);
+        }
 
-        public Continent addContinent(Continent continent) {
-            try {
-                this.context.Continents.Add(continent);
-                return continent;
-            }catch(Exception ex) {
-                throw new ContinentRepositoryException("ContinentRepository: addContinent -  gefaald", ex);
+        public void Delete(int continentId) {
+            DTContinent dt = GetContinentDataForRetrievedId(continentId);
+            context.Remove(dt);
+            context.SaveChanges();
+        }
+
+        //Hulp methode voor het ontvangen van de ID
+        private DTContinent GetContinentDataForRetrievedId(int id) {
+            return context.Continents.Where(x => x.Id == id)
+                .Include(x => x.Countries)
+                .ThenInclude(x => x.Cities)
+                .FirstOrDefault();
+        }
+
+        public Continent GetContinentById(int id) {
+            DTContinent dt = GetContinentDataForRetrievedId(id);
+            if(dt == null) {
+                return null;
+            }
+            else {
+                return DataConverter.ConvertContinentDataToContinent(dt);
             }
         }
 
-        public void delete(Continent continent) {
-            try {
-                this.context.Continents.Remove(continent);
-            }catch(Exception ex) {
-                throw new ContinentRepositoryException("ContinentRepository : delete - gefaald", ex);
-            }
+        public bool IsNameAvailable(string name) {
+            return !context.Continents.Any(x => x.Name == name);
         }
 
-        public void deleteAll() {
-            try {
-                this.context.Continents.RemoveRange(context.Continents);
-            }catch(Exception ex) {
-                throw new ContinentRepositoryException("ContinentRepository: deleteAll - gefaald", ex);
-            }
+        //Hulp methode voor update
+        private void UpdateContinentHelper(DTContinent dtOne, DTContinent dtTwo) {
+            dtOne.Countries = dtTwo.Countries;
+            dtOne.Name = dtTwo.Name;
         }
 
-        public bool exists(Continent continent) {
-            try {
-                return this.context.Continents.Contains(continent);
-            }catch(Exception ex) {
-                throw new ContinentRepositoryException("ContientRepository: exists - gefaald", ex);
-            }
-        }
-
-        public IEnumerable<Continent> getAll() {
-            try {
-                return this.context.Continents
-                    .Include(continent => continent.Countries).ThenInclude(country => country.Cities)
-                    .ThenInclude(city => city.Country).Include(continent => continent.Countries)
-                    .ThenInclude(country => country.Rivers).ThenInclude(river => river.Countries)
-                    .Include(continent => continent.Countries).ThenInclude(country => country.Capitals)
-                    .ThenInclude(capital => capital.Country).ToList<Continent>();
-            }catch(Exception ex) {
-                throw new ContinentRepositoryException("ContinentRepository: getAll - gefaald", ex);
-            }
-        }
-
-        public Continent getContinentById(int id) {
-            try {
-                return this.context.Continents
-                    .Include(continent => continent.Countries).ThenInclude(country => country.Cities)
-                    .ThenInclude(city => city.Country).Include(continent => continent.Countries)
-                    .ThenInclude(country => country.Rivers).ThenInclude(rivers => rivers.Countries)
-                    .Include(continent => continent.Countries).ThenInclude(country => country.Capitals)
-                    .ThenInclude(capital => capital.Country).Where(c => c.Id == id).SingleOrDefault();
-            }catch(Exception ex) {
-                throw new ContinentRepositoryException("ContinentRepository: getContinentById(int id) - gefaald", ex);
-            }
-        }
-
-        public void update(Continent continent) {
-            try {
-                this.context.Continents.Update(continent);
-            }catch(Exception ex) {
-                throw new ContinentRepositoryException("ContinentRepository: update - gefaald", ex);
-            }
+        public Continent Update(Continent continent) {
+            DTContinent dt = DataConverter.ConvertContinentToContinentData(continent);
+            DTContinent dtSecond = context.Continents.Find(dt.Id);
+            UpdateContinentHelper(dt, dtSecond);
+            context.Continents.Update(dtSecond);
+            context.SaveChanges();
+            return DataConverter.ConvertContinentDataToContinent(dtSecond);
         }
     }
 }

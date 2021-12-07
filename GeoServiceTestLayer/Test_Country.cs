@@ -10,149 +10,133 @@ using Xunit;
 namespace GeoServiceTestLayer {
     public class Test_Country {
 
-        [Fact]
-        public void Test_setName_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("China", 3456, 7897, continenten);
-            country.setName("China");
-            Assert.Equal("China", country.Name);
+        //Hulp methodes
+        private Country GetStandardCountry() {
+            Continent continent = new Continent("testContinent");
+            Country country = new Country("testCountry", 40000, 10, continent);
+            return country;
         }
-
-        [Theory]
-        [InlineData(null)]
-        public void Test_setName_Invalid(string name) {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country(name, 3456, 7897, continenten);
-            var exc = Assert.Throws<CountryException>(() => country.setName(name));
-            Assert.Equal("Country: setName - Name is null", exc.Message);
+        private Country GetSecondCountry() {
+            Continent continent = new Continent("testContinent");
+            Country country = new Country("testCountry2", 40000, 10, continent);
+            return country;
         }
 
         [Fact]
-        public void Test_setPopulation_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("China", 0, 7897, continenten);
-            country.setPopulation(0);
-            Assert.Equal(0, country.Population);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void Test_setPopulation_Invalid(int population) {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("Taiwan", population, 7897, continenten);
-            var exc = Assert.Throws<CountryException>(() => country.setPopulation(population));
-            Assert.Equal("Country: setPopulation - Population can't be zero or lower than one", exc.Message);
+        public void Test_CreateCountry_ShouldSucceed() {
+            Continent cont = new Continent("Europe");
+            string testName = "name";
+            int population = 2500;
+            int surface = 35;
+            Country ctr = new Country(testName, population, surface, cont);
+            Assert.True(ctr.Name == testName, "The name was not set correctly.");
+            Assert.True(ctr.Population == population, "The population was not set correctly.");
+            Assert.True(ctr.Surface == surface, "The surface area was not set correctly.");
+            Assert.True(ctr.Continent.Equals(cont), "The continent was not set correctly.");
+            Assert.True(ctr.GetCities().Count == 0, "The cities were not set correctly.");
+            Assert.True(ctr.GetCapitals().Count == 0, "The capitals were not set correctly.");
+            Assert.True(ctr.GetRivers().Count == 0, "The rivers were not set correctly.");
         }
 
         [Fact]
-        public void Test_setSurface_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("China", 1113, -1, continenten);
-            country.setSurface(-1);
-            Assert.Equal(-1, country.Surface);
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void Test_setSurface_Invalid(int surface) {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("Taiwan", 12212, surface, continenten);
-            var exc = Assert.Throws<CountryException>(() => country.setSurface(surface));
-            Assert.Equal("Country: setSurface - Surface can't be zero or lower than one", exc.Message);
+        public void Test_CountryWithContinentAsNull_ShouldThrowException() {
+            Assert.Throws<CountryException>(() => new Country("France", 12000, 4500, null));
         }
 
 
         [Fact]
-        public void Test_setContinent_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("China", 1113, 122220, continenten);
-            country.setContinent(continenten);
-            Assert.Equal(continenten, country.Continent);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        public void Test_Continent_Invalid(Continent continent) {
-            Continent continenten = new Continent(null);
-            Country country = new Country("Taiwan", 12212, 12122, continenten);
-            var exc = Assert.Throws<CountryException>(() => country.setContinent(continent));
-            Assert.Equal("Country: setContinent - continent is null", exc.Message);
+        public void Test_PopulationLessThanZero_ShouldThrowException() {
+            Continent cont = new Continent("Europe");
+            string testName = "Denmark";
+            int population = -1;
+            int surface = 35;
+            Assert.Throws<CountryException>(() => new Country(testName, population, surface, cont));
         }
 
         [Fact]
-        public void Test_addCity_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country coun = new Country("China", 1113, 122220, continenten);
-            City c = new City("Shangai", coun, 1222);
-            coun.addCity(c);
-            Assert.Contains(c, coun.Cities);
-            City cChina = new City("Chinatown", coun, 3456);
-            coun.addCity(cChina);
-            Assert.Equal(2, coun.Cities.Count);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        public void Test_addCity_Invalid(City city) {
-            Continent continenten = new Continent(null);
-            Country country = new Country("Taiwan", 12212, 12122, continenten);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        public void Test_addCity_BecauseCityAllreadyExists(City city) {
-            Continent continenten = new Continent(null);
-            Country country = new Country("Taiwan", 12212, 12122, continenten);
+        public void Test_PopulationIsZero_ShouldThrowException() {
+            Continent cont = new Continent("Europe");
+            string testName = "Serbia";
+            int population = 0;
+            int surface = 35;
+            Assert.Throws<CountryException>(() => new Country(testName, population, surface, cont));
         }
 
         [Fact]
-        public void Test_removeCity_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country coun = new Country("China", 1113, 122220, continenten);
-            City c = new City("Shangai", coun, 1222);
-            coun.addCity(c);
-            Assert.Contains(c, coun.Cities);
-
+        public void Test_SurfaceLessThanZero_ShouldThrowException() {
+            Continent cont = new Continent("Europe");
+            string testName = "Denmark";
+            int population = 34000;
+            int surface = -1;
+            Assert.Throws<CountryException>(() => new Country(testName, population, surface, cont));
         }
 
-        [Theory]
-        [InlineData(null)]
-        public void Test_Test_removeCity_Invalid(City city) {
-            Continent continenten = new Continent(null);
-            Country country = new Country("Taiwan", 12212, 12122, continenten);
+        [Fact]
+        public void Test_SurfaceIsZero_ShouldThrowException() {
+            Continent cont = new Continent("Europe");
+            string testName = "Serbia";
+            int population = 20908;
+            int surface = 0;
+            Assert.Throws<CountryException>(() => new Country(testName, population, surface, cont));
+        }
+
+        [Fact]
+        public void Test_AddingCapitals_ShouldAddToBothCapitalsAndCities() {
+            Country country = GetStandardCountry();
+            City city = new City("testCity1", 10, country, true);
+            Assert.True(country.GetCapitals().Count == 1, "The amount of capitals was not correct");
+            Assert.True(country.GetCapitals() is IReadOnlyCollection<City>, "The collection was not read only.");
+            Assert.True(country.GetCities().Count == 1, "The amount of capitals was not correct");
+            Assert.True(country.GetCities() is IReadOnlyCollection<City>, "The collection was not read only.");
+        }
+
+        [Fact]
+        public void Test_AddingCity_ShouldAddToCitiesAndNotCapitals() {
+            Country country = GetStandardCountry();
+            City city = new City("testCity1", 10, country, false);
+
+            Assert.True(country.GetCapitals().Count == 0, "The amount of capitals was not correct");
+            Assert.True(country.GetCapitals() is IReadOnlyCollection<City>, "The collection was not read only.");
+            Assert.True(country.GetCities().Count == 1, "The amount of capitals was not correct");
+            Assert.True(country.GetCities() is IReadOnlyCollection<City>, "The collection was not read only.");
         }
 
 
         [Fact]
-        public void Test_addCapital_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("China", 1113, 122220, continenten);
+        public void Test_RemoveAsCapital_CityStaysInCountry() {
+            Country country1 = GetStandardCountry();
 
+            City testCity = new City("testName", 15, country1, true);
+            Assert.True(country1.GetCapitals().Count == 1, "The capitals in the second country was not correctly added");
+            Assert.True(country1.GetCities().Count == 1, "The Cities in the second country were not correctly added.");
+            country1.RemoveAsCapital(testCity);
+
+            Assert.True(testCity.Capital == false, "The city was no longer a capital");
+            Assert.True(testCity.Country.Equals(country1), "The country was not correctly updated");
+            Assert.True(country1.GetCapitals().Count == 0, "The capitals in the second country was not correctly removed");
+            Assert.True(country1.GetCities().Count == 1, "The Cities in the second country were not kept in the cities collection.");
         }
-
-        [Theory]
-        [InlineData(null)]
-        public void Test_Test_removeCapital_Invalid(City capital) {
-            Continent continenten = new Continent(null);
-            Country country = new Country("Taiwan", 12212, 12122, continenten);
-        }
-
 
         [Fact]
-        public void Test_addRiver_Valid() {
-            Continent continenten = new Continent("Asia");
-            Country country = new Country("China", 1113, 122220, continenten);
-
+        public void Test_PopulationMustAlwaysBeBiggerThanTheSumOfTheCities__ShouldThrowException() {
+            Country country1 = GetStandardCountry();
+            Assert.Throws<CountryException>(() => new City("Gent", country1.Population + 1, country1, true));
         }
 
-        [Theory]
-        [InlineData(null)]
-        public void Test_Test_removeRiverInvalid(River river) {
-            Continent continenten = new Continent(null);
-            Country country = new Country("Taiwan", 12212, 12122, continenten);
+        [Fact]
+        public void Test_PopulationMustAlwaysBeBiggerThanTheSumOfTheCities_EqualToThePopulation_ShouldThrowException() {
+            Country country1 = GetStandardCountry();
+            City testCity = new City("Waregem", country1.Population - 1, country1, true);
+
+            City testCity2 = new City("Ooike", 1, country1, true);
+
+            Assert.True(country1.Population == testCity.Population + testCity2.Population, "The population did not match up.");
         }
+
+
+
+
+
 
 
     }

@@ -1,6 +1,7 @@
 ﻿using GeoServiceBusinessLayer.Exceptions;
 using GeoServiceBusinessLayer.Interfaces;
 using GeoServiceBusinessLayer.Models;
+using GeoServiceDataLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,75 +11,60 @@ using System.Threading.Tasks;
 
 namespace GeoServiceDataLayer.Repositories {
     public class CityRepository : ICityRepository {
-        protected DataContext context;
+        protected CountryContext context;
 
-        public CityRepository(DataContext context) {
+        public CityRepository(CountryContext context) {
             this.context = context;
         }
 
-        public City addCity(City city) {
-            try {
-                this.context.Cities.Add(city);
-                return city;
-            }catch(Exception ex) {
-                throw new CityRepositoryException("CityRepository: addCity - gefaald", ex);
+        public City AddCity(City city) {
+            DTCity dt = DataConverter.ConvertCityToCityData(city);
+            context.Cities.Add(dt);
+            context.SaveChanges();
+            return DataConverter.ConvertCityDataToCity(dt);
+        }
+
+        public void Delete(int city) {
+            DTCity rstdt = context.Cities.Find(city);
+            context.Remove(rstdt);
+            context.SaveChanges();
+        }
+
+        public City GetCityById(int id) {
+            DTCity rs = GetDataCityForRetrievingId(id);
+            if(rs == null) {
+                return null;
+            }
+            else {
+                return DataConverter.ConvertCityDataToCity(rs);
             }
         }
 
-        public void delete(City city) {
-            try {
-                this.context.Cities.Remove(city);
-            }catch(Exception ex) {
-                throw new CityRepositoryException("CityRepository: delete - gefaald", ex);
-            }
+        //Lambda expressie voor het vergemakkelijken van de methode met param(id)
+        private DTCity GetDataCityForRetrievingId(int id) {
+            return context.Cities
+                .Where(x => x.Id
+                == id)
+                .Include(x =>
+                x.Country)
+                .ThenInclude(x => x.Continent)
+                .FirstOrDefault();
         }
 
-        public void deleteAll() {
-            try {
-                this.context.Cities.RemoveRange(context.Cities);
-            }catch(Exception ex) {
-                throw new CityRepositoryException("CityRepository: deleteAll - gefaald", ex);
-            }
+        private void UpdateCityHelper(DTCity cOne, DTCity cTwo) {
+            cOne.CountryId = cTwo.CountryId;
+            cOne.Name = cTwo.Name;
+            cOne.Population = cTwo.Population;
+            cOne.Capital = cTwo.Capital;
         }
 
-        public bool exists(City city) {
-            try {
-                return this.context.Cities.Contains(city);
-            }catch(Exception ex) {
-                throw new CityRepositoryException("CityRepository: exists - gefaald", ex);
-            }
-        }
-
-        public IEnumerable<City> getAll() {
-            try {
-                return this.context.Cities
-                    .Include(City => City.Country).ThenInclude(country => country.Continent)
-                    .Include(city => city.Country).ThenInclude(country => country.Cities)
-                    .Include(city => city.Country).ThenInclude(country => country.Capitals)
-                    .Include(city => city.Country).ThenInclude(country => country.Rivers).ToList<City>();
-            }catch(Exception ex) {
-                throw new CityRepositoryException("CityRepository: getAll - gefaald", ex);
-            }
-        }
-
-        public City getCityById(int id) {
-            try {
-                return this.context.Cities
-                    .Include(city => city.Country).ThenInclude(country => country.Continent)
-                    .Include(city => city.Country).ThenInclude(country => country.Cities)
-                    .Include(city => city.Country).ThenInclude(country => country.Capitals)
-                    .Include(city => city.Country).ThenInclude(country => country.Rivers).Where(c => c.Id == id).SingleOrDefault();
-            }catch(Exception ex) {
-                throw new CityRepositoryException("CityRepository: getCityById(int id) - gefaald", ex);
-            }
-        }
-
-        public void update(City city) {
-            try {
-                this.context.Cities.Update(city);
-            }catch(Exception ex) {
-                throw new CityRepositoryException("CityRepository: update - gefaald", ex);
-            }
+        public City Update(City cityId) {
+            DTCity newCity = DataConverter.ConvertCityToCityData(cityId);
+            DTCity originalCity = GetDataCityForRetrievingId(cityId.Id);
+            UpdateCityHelper(newCity, originalCity);
+            context.Cities.Update(originalCity);
+            context.SaveChanges();
+            return DataConverter.ConvertCityDataToCity(originalCity);
         }
     }
 }

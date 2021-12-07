@@ -7,12 +7,10 @@ using GeoServiceBusinessLayer.Models;
 
 namespace GeoServiceBusinessLayer.Interfaces {
     public interface IContinentRepository {
-        Continent addContinent(Continent continent);
-        Continent getContinentById(int id);
-        IEnumerable<Continent> getAll();
-        void delete(Continent continent);
-        void deleteAll();
-        void update(Continent continent);
-        bool exists(Continent continent);
+        Continent AddContinent(Continent continent);
+        Continent GetContinentById(int id);
+        void Delete(int continentId);
+        Continent Update(Continent continent);
+        bool IsNameAvailable(string name);
     }
 }

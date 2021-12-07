@@ -1,6 +1,7 @@
 ﻿using GeoServiceBusinessLayer.Exceptions;
 using GeoServiceBusinessLayer.Interfaces;
 using GeoServiceBusinessLayer.Models;
+using GeoServiceDataLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,76 +12,57 @@ using System.Threading.Tasks;
 namespace GeoServiceDataLayer.Repositories {
     public class CountryRepository : ICountryRepository {
 
-        protected DataContext context;
+        protected CountryContext context;
 
-        public CountryRepository(DataContext context) {
+        public CountryRepository(CountryContext context) {
             this.context = context;
         }
 
-
-        public Country addCountry(Country country) {
-            try {
-                this.context.Countries.Add(country);
-                return country;
-            }catch(Exception ex) {
-                throw new CountryRepositoryException("CountryRepository: addCountry - gefaald", ex);
-            }
+        public Country AddCountry(Country country) {
+            DTCountry dt = DataConverter.ConvertCountryToDataCountry(country);
+            context.Countries.Add(dt);
+            context.SaveChanges();
+            return GetCountryById(dt.Id);
         }
 
-        public void delete(Country country) {
-            try {
-                this.context.Countries.Remove(country);
-            }catch(Exception ex) {
-                throw new CountryRepositoryException("CountryRepository: delete - gefaald", ex);
-            }
+        public void Delete(int countryId) {
+            DTCountry dt = context.Countries.Find(countryId);
+            context.Countries.Remove(dt);
+            context.SaveChanges();
         }
 
-        public void deleteAll() {
-            try {
-                this.context.Countries.RemoveRange(context.Countries);
-            }catch(Exception ex) {
-                throw new CountryRepositoryException("CountryRepository: deleteAll - gefaald", ex);
-            }
+        public Country GetCountryById(int id) {
+            DTCountry dtc = GetCountryForDefienedId(id);
+            if (dtc == null)
+                return null;
+            else
+                return DataConverter.ConvertCountryDataToCountry(dtc);
         }
 
-        public bool exists(Country country) {
-            try {
-                return this.context.Countries.Contains(country);
-            }catch(Exception ex) {
-                throw new CountryRepositoryException("CountryRepository: exists - gefaald", ex);
-            }
+        //Hulpfunctie id
+        private DTCountry GetCountryForDefienedId(int id) {
+            return context.Countries.Where(x => x.Id == id)
+                .Include(x => x.Continent)
+                .Include(x => x.Cities)
+                .Include(x => x.Rivers)
+                .ThenInclude(x => x.River)
+                .FirstOrDefault();
         }
 
-        public IEnumerable<Country> getAll() {
-            try {
-                return this.context.Countries
-                    .Include(country => country.Continent).ThenInclude(continent => continent.Countries)
-                    .Include(country => country.Cities).ThenInclude(city => city.Country)
-                    .Include(country => country.Capitals).ThenInclude(city => city.Country)
-                    .Include(country => country.Rivers).ThenInclude(river => river.Countries).ToList<Country>();
-            }catch(Exception ex) {
-                throw new CountryRepositoryException("CountryRepository: getAll - gefaald", ex);
-            }
+        private void UpdateHelper(DTCountry dataCountryOne, DTCountry dataCountryTwo) {
+            dataCountryOne.Name = dataCountryTwo.Name;
+            dataCountryOne.Population = dataCountryTwo.Population;
+            dataCountryOne.Surface = dataCountryTwo.Surface;
+            dataCountryOne.ContinentId = dataCountryTwo.ContinentId;
         }
 
-        public Country getById(int id) {
-            try {
-                return this.context.Countries
-                    .Include(country => country.Continent).ThenInclude(continent => continent.Countries)
-                    .Include(country => country.Cities).ThenInclude(city => city.Country)
-                    .Include(country => country.Capitals).ThenInclude(capital => capital.Country)
-                    .Include(country => country.Rivers).ThenInclude(river => river.Countries).Where(c => c.Id == id).SingleOrDefault();
-            }catch(Exception ex) {
-                throw new CountryRepositoryException("CountryRepository: getById(int id) gefaald", ex);
-            }
-        }
-
-        public void update(Country country) {
-            try {
-                this.context.Countries.Update(country);
-            }catch(Exception ex) {
-                throw new CountryRepositoryException("CountryRepository: update - gefaald", ex);
-            }
+        public Country Update(Country country) {
+            DTCountry DataCountry = DataConverter.ConvertCountryToDataCountry(country);
+            DTCountry OriginalCountry = GetCountryForDefienedId(country.Id);
+            UpdateHelper(DataCountry, OriginalCountry);
+            context.Countries.Update(OriginalCountry);
+            context.SaveChanges();
+            return DataConverter.ConvertCountryDataToCountry(OriginalCountry);
         }
     }
-}
+    }

@@ -7,12 +7,9 @@ using GeoServiceBusinessLayer.Models;
 
 namespace GeoServiceBusinessLayer.Interfaces {
     public interface ICityRepository {
-        City addCity(City city);
-        City getCityById(int id);
-        IEnumerable<City> getAll();
-        void delete(City city);
-        void deleteAll();
-        void update(City city);
-        bool exists(City city);
+        City AddCity(City city);
+        City GetCityById(int id);
+        void Delete(int city);
+        City Update(City cityId);
     }
 }

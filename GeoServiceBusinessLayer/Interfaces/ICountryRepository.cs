@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace GeoServiceBusinessLayer.Interfaces {
     public interface ICountryRepository {
-        Country addCountry(Country country);
-        Country getById(int id);
-        IEnumerable<Country> getAll();
-        void delete(Country country);
-        void deleteAll();
-        void update(Country country);
-        bool exists(Country country);
+        Country AddCountry(Country country);
+        Country GetCountryById(int id);
+        void Delete(int countryId);
+        Country Update(Country country);
     }
 }

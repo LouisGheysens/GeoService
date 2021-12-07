@@ -2,6 +2,7 @@
 using GeoServiceBusinessLayer.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,141 +11,162 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GeoServiceBusinessLayer.Models {
-    public partial class Country {
+    public class Country {
+
         #region Constructor
         public Country(string name, int population, int surface, Continent continent) {
-            setName(name);
-            setPopulation(population);
-            setSurface(surface);
-            setContinent(continent);
-        }
-
-        public Country() { }
-        #endregion
-
-        #region Properties
-        public int Id { get; private set; }
-
-        public string Name { get; private set; }
-
-        public int Population { get; private set; }
-
-        public int Surface { get; private set; }
-
-        public Continent Continent { get; private set; }
-
-        public virtual ICollection<City> Cities { get; private set; } = new List<City>();
-
-        public virtual ICollection<City> Capitals { get; private set; } = new List<City>();
-
-        public virtual ICollection<River> Rivers { get; private set; } = new List<River>();
-        #endregion
-
-        #region Methods
-
-        public void setContinent(Continent continent) {
-            if (continent == null) throw new CountryException("Country: setContinent - continent is null");
-            this.Continent = continent;
-        }
-
-        public void setSurface(int surface) {
-            if (surface < 1) throw new CountryException("Country: setSurface - Surface can't be zero or lower than one");
-        }
-
-        public void setPopulation(int population) {
-            if (population < 1) throw new CountryException("Country: setPopulation - Population can't be zero or lower than one");
-            this.Population = population;
-        }
-
-        public void setName(string name) {
-            if (string.IsNullOrWhiteSpace(name)) throw new CountryException("Country: setName - Name is null");
-            this.Name = name;
-        }
-
-        public void addCities(List<City> cities) {
-            if (cities == null) throw new CountryException("Country: addCities - city is null!");
-            foreach(City c in cities) {
-                addCity(c);
-            }
-        }
-
-        public void addCity(City city) {
-            if (city == null) throw new CountryException("Country: addCity - city is null!");
-            if (this.Cities.Contains(city)) throw new CountryException("Country: addCity - city allready exists");
-            this.Cities.Add(city);
-        }
-
-        public void removeCities(City c) {
-            if (c == null) throw new CountryException("Country: removeCities - city is null");
-            if (!this.Cities.Contains(c)) throw new CountryException("Country: removeCities - city doesn't exist");
-            this.Cities.Remove(c);
-        }
-
-        public void addCapitals(List<City> capitals) {
-            if (capitals == null) throw new CountryException("Country: addCapitals - capital is null");
-            foreach(City c in capitals) {
-                addCapital(c);
-            }
-        }
-
-        public void addCapital(City capital) {
-            if (capital == null) throw new CountryException("Country: addCapital - capital is null");
-            if (this.Capitals.Contains(capital)) throw new CountryException("Country: addCapital - capital allready exists");
-            if (!this.Cities.Contains(capital)) throw new CountryException("Country: addCapital - there was no capital in this city");
-            this.Capitals.Add(capital);
-        }
-
-
-        public void removeCapitals(City cp) {
-            if (cp == null) throw new CountryException("Country: removeCapitals - capital is null");
-            if (!this.Capitals.Contains(cp)) throw new CountryException("Country: removeCapitals - there is no capital found");
-            this.Capitals.Remove(cp);
-        }
-
-        public void addRivers(List<River> rivers) {
-            if (rivers == null) throw new CountryException("Country: addRivers - rivern is null!");
-            foreach(River r in rivers) {
-                addRiver(r);
-            }
-        }
-
-
-        public void addRiver(River riv) {
-            if (riv == null) throw new CountryException("Country: addRiver - river is null!");
-            if (this.Rivers.Contains(riv)) throw new CountryException("Country: addRiver - river allready exists");
-            this.Rivers.Add(riv);
-        }
-
-
-
-        public void removeRiver(River r) {
-            if (r == null) throw new CountryException("Country: removeRiver - river is null");
-            if (!this.Rivers.Contains(r)) throw new CountryException("Country: removeRiver - river doesn't exist");
-            this.Rivers.Remove(r);
+            Name = name;
+            Population = population;
+            Surface = surface;
+            Continent = continent;
         }
         #endregion
 
-        #region GetHashCode
-        public override bool Equals(object obj) {
-            return obj is Country country &&
-                   Id == country.Id &&
-                   Name == country.Name &&
-                   Population == country.Population &&
-                   Surface == country.Surface &&
-                   EqualityComparer<Continent>.Default.Equals(Continent, country.Continent) &&
-                   EqualityComparer<ICollection<City>>.Default.Equals(Cities, country.Cities) &&
-                   EqualityComparer<ICollection<City>>.Default.Equals(Capitals, country.Capitals) &&
-                   EqualityComparer<ICollection<River>>.Default.Equals(Rivers, country.Rivers);
+        private int _Id;
+        public int Id {
+            get { return _Id; }
+            set {
+                if (value < 1)
+                    throw new CountryException("Country: Id has to be bigger than 0!");
+                else { _Id = value; }
+            }
         }
 
-        public override int GetHashCode() {
-            return HashCode.Combine(Id, Name, Population, Surface, Continent, Cities, Capitals, Rivers);
+        private Continent _Continent;
+        public Continent Continent {
+            get { return _Continent; }
+            set {
+                if (value == null)
+                    throw new CountryException("Country: Country can't be null!");
+                else {
+                    if(_Continent != null) {
+                        _Continent.RemoveCountryFromContinent(this);
+                    }
+                    _Continent = value;
+                    _Continent.AddCountryToContinent(this);
+                }
+            }
+        }
+
+        internal void AddRiver(River r) {
+            Rivers.Add(r);
+        }
+
+        internal void RemoveRiver(River r) {
+            Rivers.Remove(r);
+        }
+
+        private string _Name;
+        public string Name {
+            get { return _Name; }
+            set {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new CountryException("Country: the name of a country can't be null!");
+                else _Name = value;
+            }
+        }
+
+        private int _Population;
+        public int Population {
+            get { return _Population; }
+            set {
+                if(value < 1)
+                    throw new CountryException("Country: the population must be bigger than 0");
+                    else {
+                        _Population = value;
+                    }
+            }
+        }
+
+        private int _Surface;
+        public int Surface {
+            get { return _Surface; }
+            set {
+                if (value < 1)
+                    throw new CountryException("Country: the surfacee area of a country must be bigger than 0");
+                else {
+                    _Surface = value;
+                }
+            }
+        }
+
+        private List<City> Capitals { get; set; } = new List<City>();
+        private List<City> Cities { get; set; } = new List<City>();
+
+        public ReadOnlyCollection<City> GetCities() {
+            return Cities.AsReadOnly();
+        }
+
+        public ReadOnlyCollection<City> GetCapitals() {
+            return Capitals.AsReadOnly();
+        }
+
+        public void AddCapital(City c) {
+            if (!c.Capital)
+                throw new CountryException("Country: The city was not a capital");
+            else if (Capitals.Contains(c))
+                throw new CountryException("Country: This city is allready a capital of this country");
+            else if (!Cities.Contains(c)) {
+                throw new CountryException("Country: This city is not a part of this country");
+            }
+            Capitals.Add(c);
+        }
+
+        public void AddCity(City c) {
+            if (Cities.Contains(c))
+                throw new CountryException("This city is allready oart of this country");
+            else if (c.Country != this)
+                throw new CountryException("Country: The country of this city did not equal this country");
+            else {
+                int total = 0;
+                foreach(City r in Cities) {
+                    total += r.Population;
+                }
+                total += c.Population;
+                if (total > Population)
+                    throw new CountryException("Country: The population of ths cities in a country can not be bigger than the" +
+                        " population of that country");
+                Cities.Add(c);
+            }
+        }
+
+        public void RemoveCity(City c) {
+            Cities.Remove(c);
+            Capitals.Remove(c);
+        }
+
+        public void RemoveAsCapital(City c) {
+            if (Capitals.Contains(c)) {
+                Capitals.Remove(c);
+                c.Capital = false;
+            }
+        }
+
+        private List<River> Rivers { get; set; } = new List<River>();
+
+        public ReadOnlyCollection<River> GetRivers() {
+            return Rivers.AsReadOnly();
         }
 
         public override string ToString() {
             return string.Format("Country: {0}, {1}, {2}", this.Name, this.Population, this.Surface);
         }
 
-        #endregion
+        public override bool Equals(object obj) {
+            if (obj is Country) {
+                Country pop = obj as Country;
+
+                return Name == pop.Name &&
+                    Population == pop.Population &&
+                    Surface == pop.Surface &&
+                    Capitals.SequenceEqual(pop.Capitals) &&
+                    Cities.SequenceEqual(pop.Cities);
+            }
+            else return false;
+        }
+
+        public override int GetHashCode() {
+            return HashCode.Combine(Name, Population, Surface);
+        }
     }
 }

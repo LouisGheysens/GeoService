@@ -11,85 +11,50 @@ namespace GeoServiceTestLayer {
     public class Test_Continent {
 
         [Fact]
-        public void Test_setName_Valid() {
-            Continent continent = new Continent("Asia");
-            continent.setName("Asia");
-            Assert.Equal("Asia", continent.Name);
-        }
-
-        [Theory]
-        [InlineData(" ")]
-        [InlineData(null)]
-        public void Test_setName_InValid(string name) {
-            Continent continent = new Continent("Asia");
-            var exc = Assert.Throws<ContinentException>(() => continent.setName(name));
-            Assert.Equal("Continent: setName - name is null", exc.Message);
+        public void Test_ContinentNameEmpty_ShouldThrowException() {
+            Assert.Throws<ContinentException>(() => new Continent(""));
         }
 
         [Fact]
-        public void Test_add_ValidValue_ToCountryCollection() {
-            List<Country> countries = new List<Country>();
-            Continent c = new Continent("South-America");
-            Country country = new Country("Mexico", 2345, 4567, c);
-            c.addCountry(country);
-            Assert.Contains(country, c.Countries);
-            Country CountryOne = new Country("Cuba", 3456, 1289, c);
-            c.addCountry(CountryOne);
-            Assert.Contains(CountryOne, c.Countries);
-            Assert.Equal(2, c.Countries.Count);
+        public void Test_ContinentNameNull_ShouldThrowException() {
+            Assert.Throws<ContinentException>(() => new Continent(null));
         }
 
         [Fact]
-        public void Test_add_InValidValue_ToCountryCollection() {
-            List<Country> countries = new List<Country>();
-            Continent c = new Continent("South-America");
-            Country countryOne = new Country("Peru", 2345, 4567, c);
-            c.addCountry(countryOne);
-            var exc = Assert.Throws<ContinentException>(() => new Country("Peru", 2345, 4567, c));
-            Assert.Equal("Continent: addCountry - country is null", exc.Message);
-            Assert.Equal(0, c.Countries.Count);
-        }
-
-
-        [Fact]
-        public void Test_removeCountry_Succeed() {
-            List<Country> countries = new List<Country>();
-            Continent c = new Continent("South-America");
-            Country countryOne = new Country("Mexico", 2345, 4567, c);
-            c.addCountry(countryOne);
-            c.removeCountry(countryOne);
-            Assert.Equal(0, c.Countries.Count);
-
-        }
-
-        [Fact]
-        public void Test_RemoveCountry_NotSucceed() {
-            List<Country> countries = new List<Country>();
-            Continent c = new Continent("South-America");
-            Country countryOne = new Country(null, 2345, 4567, c);
-            c.addCountry(countryOne);
-            c.removeCountry(countryOne);
-            var exc = Assert.Throws<CountryException>(() => new Country(null, 2345, 4567, c));
-            Assert.Equal("Continent: removeCountry - country is null", exc.Message);
-        }
-
-        [Theory]
-        [InlineData("France")]
-        [InlineData("Spain")]
-        [InlineData("Letvia")]
-        public void Test_RemoveCountry_Country_Doesnt_Exist(string country) {
-            List<Country> countries = new List<Country>();
+        public void Test_FullContinent_ShouldSucceed() {
             Continent c = new Continent("Europe");
-            Country countryOne = new Country(country, 2345, 4567, c);
-
-            Assert.Collection(
-                countries, item => item.Name.Contains("Belgium")
-                );
-
-            var exc = Assert.Throws<CountryException>(() => c.removeCountry(countryOne));
-            Assert.Equal("Continent: removeCountry - country doesn't exist", exc.Message);
+            List<Country> countries = new List<Country>();
+            Country country1 = new Country("Spain", 15, 10, c);
+            Country country2 = new Country("Portugal", 25, 20, c);
+            c.SetCountries(countries);
+            Assert.True(c.GetCountries().Count == 0, "The amount of countries in the continent was not correct");
+            countries.Add(country1);
+            countries.Add(country2);
+            c.SetCountries(countries);
+            Assert.True(c.GetCountries().Count == 2, "The amount of countries was not added correctly.");
         }
 
+        [Fact]
+        public void Test_AddCountryToContinent_ShouldSucceed() {
+            Continent c = new Continent("Asia");
+            Country country1 = new Country("Thailand", 15, 10, c);
+            Country country2 = new Country("Nepal", 25, 20, c);
+            Assert.True(c.GetCountries().Count == 2, "The amount of countries in the continent was not correct");
+        }
+
+        [Fact]
+        public void Test_PopulationCorrectlyShowTheSumOfTheCountries_ShouldSucceeed() {
+            Continent c = new Continent("Africa");
+            Assert.True(c.GetPopulation() == 0, "The Population dit not start at 0");
+            int population1 = 15;
+            Country country1 = new Country("IvorCoast", population1, 10, c);
+            Assert.True(c.GetPopulation() == population1, "The population did not correctly get updated");
+            int population2 = 25;
+            Country country2 = new Country("Oeganda", population2, 20, c);
+            Assert.True(c.GetPopulation() == population1 + population2, "The population did not correctly get updated");
+            c.RemoveCountryFromContinent(country1);
+            Assert.True(c.GetPopulation() == population2);
+        }
 
     }
-}
+    }

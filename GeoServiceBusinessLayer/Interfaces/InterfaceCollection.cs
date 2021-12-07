@@ -5,15 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GeoServiceBusinessLayer.Interfaces {
-    public interface InterfaceCollection: IDisposable {
-        ICityRepository Cities { get; }
+    public interface InterfaceCollection {
+        ICityRepository Cities { get; set; }
 
-        IContinentRepository Continents { get; }
+        IContinentRepository Continents { get; set; }
 
-        ICountryRepository Countries { get; }
+        ICountryRepository Countries { get; set; }
 
-        IRiverRepository Rivers { get; }
+        IRiverRepository Rivers { get; set; }
 
-        int Complete();
     }
 }

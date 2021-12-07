@@ -6,74 +6,75 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using GeoServiceAPI.Mappings;
 using GeoServiceBusinessLayer.Exceptions;
+using System.Collections.ObjectModel;
 
 namespace GeoServiceBusinessLayer.Models {
     public class River {
         #region Constructor
         public River(string name, int length, List<Country> countries) {
-            setName(name);
-            setLength(length);
-            addCountries(countries);
+            Name = name;
+            Length = length;
+            SetCountries(countries);
         }
-        public River() { }
         #endregion
 
-        #region Properties
-        public int Id { get; private set; }
+        public void SetCountries(List<Country> countries) {
+            if (countries == null || countries.Count < 1)
+                throw new RiverException("River: River must belong to at least one country");
+            else {
+                if (countries.Count == countries.Distinct().Count()) {
+                    foreach (Country cr in Countries) {
+                        cr.RemoveRiver(this);
+                    }
+                    Countries = new List<Country>();
+                    foreach (Country r in countries) {
+                        Countries.Add(r);
+                        r.AddRiver(this);
+                    }
+                }
+                else throw new RiverException("River: The list of countries contained doubles");
+            }
+        }
+        public ReadOnlyCollection<Country> GetCountries() {
+            return Countries.AsReadOnly();
+        }
 
-        public string Name { get; private set; }
+        private List<Country> Countries { get; set; } = new List<Country>();
 
-        public int Length { get; private set; }
-        public virtual ICollection<Country> Countries { get; private set; } = new List<Country>();
-        #endregion
+        public int Id { get; set; }
 
-        #region Methods
-        public void addCountries(List<Country> countries) {
-            if (countries == null) throw new RiverException("River: addCountries - countries is null");
-            foreach(Country c in countries) {
-                addCountry(c);
+        private string _Name;
+        public string Name {
+            get { return _Name; }
+            set {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new RiverException("River: A ruver's name can not be null or empty");
+                else _Name = value;
             }
         }
 
-        public void addCountry(Country c) {
-            if (c == null) throw new RiverException("River: addCountry - country is null");
-            if (this.Countries.Contains(c)) throw new RiverException("River: addCountry - country allready exists");
-            this.Countries.Add(c);
+        private int _Length;
+        public int Length {
+            get { return _Length; }
+            set {
+                if (value < 1)
+                    throw new RiverException("River: A river's length must be longer than 0");
+                else _Length = value;
+            }
         }
 
-        public void removeCountry(Country c) {
-            if (c == null) throw new RiverException("River: removeCountry - country is null");
-            if (!this.Countries.Contains(c)) throw new RiverException("River: removeCountry: - country doesn't exists");
-            this.Countries.Remove(c);
-        }
 
-        public void setLength(int length) {
-            if (length < 0) throw new RiverException("River: setLength - Length is lower or is null");
-            this.Length = length;
-        }
-
-        public void setName(string name) {
-            if (string.IsNullOrWhiteSpace(name)) throw new RiverException("River: setName - Name is empty");
-            this.Name = name;
-        }
-        #endregion
-
-        #region GetHashCode()
-        public override bool Equals(object obj) {
-            return obj is River river &&
-                   Id == river.Id &&
-                   Name == river.Name &&
-                   Length == river.Length &&
-                   EqualityComparer<ICollection<Country>>.Default.Equals(Countries, river.Countries);
-        }
-
-        public override int GetHashCode() {
-            return HashCode.Combine(Id, Name, Length, Countries);
-        }
-        #endregion
         #region ToString()
         public override string ToString() {
             return string.Format("River: {0}, {1}", this.Name, this.Length);
+        }
+
+        public override bool Equals(object obj) {
+            if (obj is River) {
+                River r = obj as River;
+                return r.Name == Name && r.Length == Length && r.GetCountries().SequenceEqual(GetCountries());
+            }
+            else return false;
         }
         #endregion
 

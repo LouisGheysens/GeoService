@@ -1,6 +1,7 @@
 ﻿using GeoServiceBusinessLayer.Exceptions;
 using GeoServiceBusinessLayer.Interfaces;
 using GeoServiceBusinessLayer.Models;
+using GeoServiceDataLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,82 +12,47 @@ using System.Threading.Tasks;
 namespace GeoServiceDataLayer.Repositories {
     public class RiverRepository : IRiverRepository {
 
-        protected DataContext context;
+        protected CountryContext context;
 
-        public RiverRepository(DataContext context) {
+        public RiverRepository(CountryContext context) {
             this.context = context;
         }
 
-
-        public River addRiver(River river) {
-            try {
-                this.context.Rivers.Add(river);
-                return river;
-            }catch(Exception ex) {
-                throw new RiverRepositoryException("RiverRepository: addRiver - gefaald", ex);
-            }
+        public River AddRiver(River river) {
+            DTRiver rt = DataConverter.ConvertRiverToRiverData(river);
+            context.Rivers.Add(rt);
+            context.SaveChanges();
+            return DataConverter.ConvertRiverDataToRiver(rt);
         }
 
-        public void delete(River river) {
-            try {
-                this.context.Rivers.Remove(river);
-            }catch(Exception ex) {
-                throw new RiverRepositoryException("RiverRepository: delete - gefaald", ex);
-            }
+        public void Delete(int riverId) {
+            DTRiver dt = context.Rivers.Find(riverId);
+            context.Rivers.Remove(dt);
+            context.SaveChanges();
         }
 
-        public void deleteAll() {
-            try {
-                this.context.Rivers.RemoveRange(context.Rivers);
-            }catch(Exception ex) {
-                throw new RiverRepositoryException("RiverRepository: deleteAll - gefaald", ex);
-            }
+        public River GetRiverById(int id) {
+            DTRiver dt = context.Rivers.Find(id);
+            if (dt == null)
+                return null;
+            else
+                return DataConverter.ConvertRiverDataToRiver(dt);
         }
 
-        public bool exists(River river) {
-            try {
-                return this.context.Rivers.Contains(river);
-            }catch(Exception ex) {
-                throw new RiverRepositoryException("RiverRepository: exists - gefaald", ex);
-            }
+        //Hulp methode update
+        public void UpdateRiverHelper(DTRiver first, DTRiver second) {
+            first.CountryLink = second.CountryLink;
+            first.Length = second.Length;
+            first.Name = second.Name;
         }
 
-        public IEnumerable<River> getAll() {
-            try {
-                return this.context.Rivers
-                    .Include(river => river.Countries).ThenInclude(country => country.Continent)
-                    .ThenInclude(continent => continent.Countries).Include(river => river.Countries)
-                    .ThenInclude(country => country.Cities).ThenInclude(city => city.Country)
-                    .Include(river => river.Countries).ThenInclude(country => country.Rivers)
-                    .ThenInclude(river => river.Countries).Include(river => river.Countries)
-                    .ThenInclude(country => country.Capitals).ThenInclude(capital => capital.Country)
-                    .ToList<River>();
-            }catch(Exception ex) {
-                throw new RiverRepositoryException("RiverRepository: getAll - gefaald", ex);
-            }
-        }
-
-        public River getRiverById(int id) {
-            try {
-                return this.context.Rivers
-                    .Include(river => river.Countries).ThenInclude(country => country.Continent)
-                    .ThenInclude(continent => continent.Countries).Include(river => river.Countries)
-                    .ThenInclude(country => country.Cities).ThenInclude(city => city.Country)
-                    .Include(river => river.Countries).ThenInclude(country => country.Rivers)
-                    .ThenInclude(river => river.Countries).Include(river => river.Countries)
-                    .ThenInclude(country => country.Capitals).ThenInclude(capital => capital.Country)
-                    .Where(x => x.Id == id).SingleOrDefault();
-            }catch(Exception ex) {
-                throw new RiverRepositoryException("RiverRepository: getRiverById - gefaald", ex);
-            }
-        }
-
-        public void updateRiver(River river) {
-            try {
-                this.context.Rivers.Update(river);
-            }catch(Exception ex) {
-                throw new RiverRepositoryException("RiverRepository: udateRiver - gefaald", ex);
-            }
+        public River UpdateRiver(River river) {
+            DTRiver dt = DataConverter.ConvertRiverToRiverData(river);
+            DTRiver original = context.Rivers.Find(dt.Id);
+            UpdateRiverHelper(dt, original);
+            context.Rivers.Update(original);
+            context.SaveChanges();
+            return DataConverter.ConvertRiverDataToRiver(original);
         }
     }
 }
