@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\Input\" />
-    <Folder Include="Model\Output\" />
+    <ProjectReference Include="..\GeoServiceBusinessLayer\GeoServiceBusinessLayer.csproj" />
+    <ProjectReference Include="..\GeoServiceDataLayer\GeoServiceDataLayer.csproj" />
   </ItemGroup>
 
 </Project>

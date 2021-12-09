@@ -1,0 +1,15 @@
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.csproj.AssemblyReference.cache
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.AssemblyInfoInputs.cache
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.AssemblyInfo.cs
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.csproj.CoreCompileInputs.cache
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\bin\Debug\net5.0\GeoServiceBusinessLayer.deps.json
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\bin\Debug\net5.0\GeoServiceBusinessLayer.runtimeconfig.json
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\bin\Debug\net5.0\GeoServiceBusinessLayer.runtimeconfig.dev.json
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\bin\Debug\net5.0\GeoServiceBusinessLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\bin\Debug\net5.0\ref\GeoServiceBusinessLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\bin\Debug\net5.0\GeoServiceBusinessLayer.pdb
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\ref\GeoServiceBusinessLayer.dll
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.pdb
+C:\Users\Eigenaar\GeoService\GeoServiceBusinessLayer\obj\Debug\net5.0\GeoServiceBusinessLayer.genruntimeconfig.cache

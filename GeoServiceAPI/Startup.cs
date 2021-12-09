@@ -10,11 +10,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using GeoServiceAPI.Interfaces;
+using GeoServiceAPI.Model;
+using GeoServiceBusinessLayer;
+using GeoServiceDataLayer;
 
 namespace GeoServiceAPI {
     public class Startup {
         public Startup(IConfiguration configuration) {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder().AddConfiguration(configuration)
+                .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "Properties", "launchSettings.json"));
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -23,6 +31,7 @@ namespace GeoServiceAPI {
         public void ConfigureServices(IServiceCollection services) {
 
             services.AddControllers();
+            services.AddSingleton<IApiCompletion>(new APICompletion(new CountryManager(new DataAcces()), Configuration));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeoServiceAPI", Version = "v1" });

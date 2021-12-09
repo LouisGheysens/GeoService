@@ -313,19 +313,6 @@ namespace GeoServiceTestLayer {
             Assert.True(firstRiver.GetCountries()[0].GetRivers().Count() == 1, "The rivers of the new country was not properly updated.");
 
         }
-        [Fact]
-        public void Test_StillHasCities_ShouldPreventDeletingCountry() {
-            CountryManager cM = GetTestingManager();
-            City city = CreateFirstTestCity(cM);
-            cM.DeleteCountry(1);
-        }
-
-        [Fact]
-        public void Test_NameMustBeUnique() {
-            CountryManager cM = GetTestingManager();
-            Continent firstContinent = CreateFirstTestContinent(cM);
-            cM.AddContinent(firstContinent.Name);
-        }
     }
 }
 #endregion

@@ -16,7 +16,9 @@ namespace GeoServiceBusinessLayer {
             Data = dataAcces;
         }
         public City AddCity(string name, int population, Country country, bool capital = false) {
-            throw new NotImplementedException();
+            City ct = new City(name, population, country, capital);
+            City result = Data.Cities.AddCity(ct);
+            return result;
         }
 
         public Continent AddContinent(string name) {

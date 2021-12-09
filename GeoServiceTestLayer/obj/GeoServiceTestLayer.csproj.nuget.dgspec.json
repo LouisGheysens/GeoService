@@ -33,7 +33,14 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Eigenaar\\GeoService\\GeoServiceBusinessLayer\\GeoServiceBusinessLayer.csproj": {
+                "projectPath": "C:\\Users\\Eigenaar\\GeoService\\GeoServiceBusinessLayer\\GeoServiceBusinessLayer.csproj"
+              },
+              "C:\\Users\\Eigenaar\\GeoService\\GeoServiceDataLayer\\GeoServiceDataLayer.csproj": {
+                "projectPath": "C:\\Users\\Eigenaar\\GeoService\\GeoServiceDataLayer\\GeoServiceDataLayer.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -228,11 +235,7 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {
-              "C:\\Users\\Eigenaar\\GeoService\\GeoServiceAPI\\GeoServiceAPI.csproj": {
-                "projectPath": "C:\\Users\\Eigenaar\\GeoService\\GeoServiceAPI\\GeoServiceAPI.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -417,6 +420,9 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
+              "C:\\Users\\Eigenaar\\GeoService\\GeoServiceAPI\\GeoServiceAPI.csproj": {
+                "projectPath": "C:\\Users\\Eigenaar\\GeoService\\GeoServiceAPI\\GeoServiceAPI.csproj"
+              },
               "C:\\Users\\Eigenaar\\GeoService\\GeoServiceAPP\\GeoServiceAPP.csproj": {
                 "projectPath": "C:\\Users\\Eigenaar\\GeoService\\GeoServiceAPP\\GeoServiceAPP.csproj"
               },
@@ -467,6 +473,10 @@
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[16.9.4, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.16.1, )"
             },
             "coverlet.collector": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

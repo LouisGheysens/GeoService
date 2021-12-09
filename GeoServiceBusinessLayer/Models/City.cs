@@ -1,12 +1,4 @@
-﻿using GeoServiceAPI.Mappings;
-using GeoServiceBusinessLayer.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GeoServiceBusinessLayer.Exceptions;
 
 namespace GeoServiceBusinessLayer.Models {
     public class City {

@@ -1,4 +1,6 @@
 ﻿using GeoServiceAPI.Interfaces;
+using GeoServiceAPI.Model.Input;
+using GeoServiceAPI.Model.Output;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,5 +21,168 @@ namespace GeoServiceAPI.Controllers {
             ApiComplete = api;
             Logger = logger;
         }
+
+        #region Continent
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<ContinentDTOutput> GetContinent(int id) {
+            try {
+                return Ok(ApiComplete.GetContinentForId(id));
+            } catch (Exception) {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult<ContinentDTOutput> PostContinent([FromBody] ContinentDTOInput continent) {
+            try {
+                ContinentDTOutput res = ApiComplete.AddContinent(continent);
+                return CreatedAtAction(nameof(PostContinent), res);
+            }
+            catch (Exception) {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public ActionResult<ContinentDTOutput> PutContinent(int id, [FromBody] ContinentDTOInput continent) {
+            if (continent.ContinentId != id) {
+                return BadRequest("The continentId did not match with the id");
+            }
+            else {
+                return CreatedAtAction(nameof(PutContinent), ApiComplete.UpdateContinent(continent));
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult DeleteContinent(int id) {
+            try {
+                ApiComplete.DeleteContinent(id);
+                return Ok("Continent werd verwijderd!");
+            } catch (Exception) {
+                return BadRequest();
+            }
+        }
+        #endregion
+
+        #region Country
+        [HttpGet]
+        [Route("{id}/Country/{countryId}")]
+        public ActionResult<CountryDTOutput> GetCountry(int id, int countryId) {
+            try {
+                return Ok(ApiComplete.GetCountryForId(countryId));
+            } catch (Exception) {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Route("{continentId}/Country")]
+        public ActionResult<CountryDTOutput> PostCountry(int continentId, [FromBody] CountryDTOInput country) {
+            if (country.ContinentId != continentId)
+                return BadRequest("The continentId did not match");
+            else {
+                try {
+                    CountryDTOutput result = ApiComplete.AddCountry(country);
+                    return CreatedAtAction(nameof(PostContinent), result);
+                }
+                catch (Exception) {
+                    return BadRequest();
+                }
+            }
+        }
+
+        [HttpPut]
+        [Route("{ContinentId}/Country/{countryId}")]
+        public ActionResult<CountryDTOutput> PutCountry(int continentId, int countryId, [FromBody] CountryDTOInput country) {
+            if (country.CountryId != countryId) {
+                return BadRequest("The countryId's did not match!");
+            }
+            else {
+                try {
+                    return CreatedAtAction(nameof(PutCountry), ApiComplete.UpdateCountry(country));
+                }
+                catch (Exception) {
+                    return BadRequest();
+                }
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}/Country/{countryId}")]
+        public ActionResult<CountryDTOutput> DeleteCountry(int id, int countryId) {
+            try {
+                ApiComplete.DeleteCountry(countryId);
+                return Ok("Land werd verwijderd!");
+            }
+            catch (Exception) {
+                return BadRequest();
+            }
+        }
+        #endregion
+
+        #region City
+        [HttpGet]
+        [Route("{id}/country/{countryId}/city/{cityId}")]
+        public ActionResult<ContinentDTOutput> GetCity(int id, int countryId, int cityId) {
+            try {
+                CityDTOutput result = ApiComplete.GetCityForId(cityId);
+                return Ok(result);
+            }
+            catch (Exception) {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Route("{ContinentId}/Country/{countryId}/City")]
+        public ActionResult<ContinentDTOutput> PostCity(int continentId, int countryId, [FromBody] CityDTOInput city) {
+            if(city.CountryId != countryId) {
+                return BadRequest("The countryIds did not match!");
+            }
+            else {
+                try {
+                    CityDTOutput result = ApiComplete.AddCity(city);
+                    return CreatedAtAction(nameof(PostCity), result);
+                }
+                catch (Exception) {
+                    return BadRequest();
+                }
+            }
+        }
+
+        [HttpPut]
+        [Route("{id}/Country/{countryId}/City/{cityId}")]
+        public ActionResult<CountryDTOutput> PutCity(int id, int countryId, int cityId, [FromBody] CityDTOInput city) {
+            if(city.CityId != cityId) {
+                return BadRequest("The cityIds did not match!");
+            }
+            else {
+                try {
+                    return CreatedAtAction(nameof(PutCity), ApiComplete.UpdateCity(city));
+                }
+                catch (Exception) {
+                    return BadRequest();
+                }
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}/Country/{countryId}/City/{cityId}")]
+        public ActionResult<ContinentDTOutput> DeleteCity(int id, int countryId, int cityId) {
+            try {
+                ApiComplete.DeleteCity(cityId);
+                return NoContent();
+            }
+            catch (Exception) {
+                return BadRequest();
+            }
+        }
+        #endregion
+
+
+
     }
 }
