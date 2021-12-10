@@ -27,37 +27,40 @@ namespace GeoServiceAPI.Controllers {
         [Route("{id}")]
         public ActionResult<RiverDTOutput> GetRiver(int id) {
             try {
+                Logger.LogInformation("GetRiver called");
                 RiverDTOutput result = ApiComplete.GetRiverForId(id);
                 return Ok(result);
             }
-            catch (Exception) {
-                return BadRequest();
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
         public ActionResult<RiverDTOutput> PostRiver([FromBody] RiverDTOInput rivier) {
             try {
+                Logger.LogInformation("PostRiver called");
                 RiverDTOutput result = ApiComplete.AddRiver(rivier);
                 return CreatedAtAction(nameof(PostRiver), result);
             }
-            catch (Exception) {
-                return BadRequest();
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPut]
         [Route("{id}")]
         public ActionResult<RiverDTOutput> PutRiver(int id, [FromBody] RiverDTOInput river) {
-            if(river == null || river.RiverId != id) {
+            Logger.LogInformation("PutRiver called");
+            if (river == null || river.RiverId != id) {
                 return BadRequest("The id for the river was not in good condition");
             }
             else {
                 try {
                     return CreatedAtAction(nameof(PutRiver), ApiComplete.UpdateRiver(river));
                 }
-                catch (Exception) {
-                    return BadRequest();
+                catch (Exception ex) {
+                    return BadRequest(ex.Message);
                 }
             }
         }
@@ -67,6 +70,7 @@ namespace GeoServiceAPI.Controllers {
         [Route("{id}")]
         public ActionResult DeleteRiver(int id) {
             try {
+                Logger.LogInformation("DeleteRiver called");
                 ApiComplete.DeleteRiver(id);
                 return Ok("Rivier werd verwijderd!");
             }

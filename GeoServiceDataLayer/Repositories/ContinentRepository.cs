@@ -53,19 +53,15 @@ namespace GeoServiceDataLayer.Repositories {
             return !context.Continents.Any(x => x.Name == name);
         }
 
-        //Hulp methode voor update
-        private void UpdateContinentHelper(DTContinent dtOne, DTContinent dtTwo) {
-            dtOne.Countries = dtTwo.Countries;
-            dtOne.Name = dtTwo.Name;
-        }
 
         public Continent Update(Continent continent) {
             DTContinent dt = DataConverter.ConvertContinentToContinentData(continent);
-            DTContinent dtSecond = context.Continents.Find(dt.Id);
-            UpdateContinentHelper(dt, dtSecond);
-            context.Continents.Update(dtSecond);
+            DTContinent original = context.Continents.Find(dt.Id);
+            original.Countries = dt.Countries;
+            original.Name = dt.Name;
+            context.Continents.Update(original);
             context.SaveChanges();
-            return DataConverter.ConvertContinentDataToContinent(dtSecond);
+            return DataConverter.ConvertContinentDataToContinent(original);
         }
     }
 }

@@ -292,27 +292,6 @@ namespace GeoServiceTestLayer {
             Assert.True(firstRiver.Equals(updated), "The cities were not equal.");
 
         }
-        [Fact]
-        public void Test_ManagerShouldUpdateCorrectly() {
-            CountryManager cM = GetTestingManager();
-            River r = CreateFirstTestRiver(cM);
-            List<Country> countries = new List<Country> { CreateSecondTestCountry(cM) };
-            string name = "NewTestNameStringNew";
-            int length = 12345;
-            r.Length = length;
-            r.Name = name;
-            r.SetCountries(countries);
-            River updated = cM.UpdateRiver(r);
-
-            Country firstCountry = cM.GetCountryForId(1);
-            River firstRiver = cM.GetRiverForId(1);
-
-            Assert.True(firstRiver.Length == length, "The length was not properly updated.");
-            Assert.True(firstRiver.Name == name, "The name was not properly updated.");
-            Assert.True(firstCountry.GetRivers().Count() == 0, "The rivers of the original country did not get updated correctly.");
-            Assert.True(firstRiver.GetCountries()[0].GetRivers().Count() == 1, "The rivers of the new country was not properly updated.");
-
-        }
     }
 }
 #endregion

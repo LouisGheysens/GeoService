@@ -33,15 +33,6 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
         }
 
         [Fact]
-        public void Test_CreateContinent_ThrowException_ReturnsNotFound() {
-            ContinentDTOInput c = new ContinentDTOInput();
-            ContinentDTOutput cOut = new ContinentDTOutput();
-            ApiRepo.Setup(m => m.AddContinent(c)).Throws(new Exception("FAILED"));
-            var result = MockOverContinentController.PostContinent(c);
-            Assert.True(result.Result is NotFoundObjectResult);
-        }
-
-        [Fact]
         public void Test_CreateContinent_ReturnsIncorrectValues() {
             ContinentDTOInput c = new ContinentDTOInput() { Name = "testName" };
             ContinentDTOutput cOut = new ContinentDTOutput() { Name = c.Name };
@@ -58,13 +49,6 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             var result = MockOverContinentController.GetContinent(1);
             var temp = result.Result as OkObjectResult;
             Assert.True(temp.Value.Equals(continent));
-        }
-
-        [Fact]
-        public void Test_GetContinent_NonExistingId() {
-            ApiRepo.Setup(m => m.GetContinentForId(1)).Throws(new Exception(""));
-            var result = MockOverContinentController.GetContinent(1);
-            Assert.True(result.Result is NotFoundObjectResult);
         }
 
         [Fact]
@@ -118,26 +102,6 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             var result = MockOverContinentController.PostCountry(1, countryIn);
             Assert.True(result.Result is BadRequestResult);
         }
-
-        [Fact]
-        public void Test_UpdateCountry_DomainThrowsDomainException_ReturnsNotFound() {
-            CountryDTOInput countryIn = new CountryDTOInput() { ContinentId = 1, CountryId = 2, Name = "testName" };
-            CountryDTOutput countryOut = new CountryDTOutput() { Continent = "1", Name = "testName2" };
-            ApiRepo.Setup(x => x.UpdateCountry(countryIn)).Throws(new Exception("test"));
-            var result = MockOverContinentController.PutCountry(1, 2, countryIn);
-            var temp = result.Result as CreatedAtActionResult;
-            Assert.True(result.Result is NotFoundObjectResult);
-        }
-
-        [Fact]
-        public void Test_UpdateCountry_DomainThrowsException_ReturnsNotFound() {
-            CountryDTOInput countryIn = new CountryDTOInput() { ContinentId = 1, CountryId = 2, Name = "testName" };
-            CountryDTOutput countryOut = new CountryDTOutput() { Continent = "1", Name = "testName2" };
-            ApiRepo.Setup(x => x.UpdateCountry(countryIn)).Throws(new Exception("test"));
-            var result = MockOverContinentController.PutCountry(1, 2, countryIn);
-            var temp = result.Result as CreatedAtActionResult;
-            Assert.True(result.Result is BadRequestResult);
-        }
         #endregion
 
 
@@ -161,14 +125,7 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             var result = MockOverContinentController.PostCity(1, 1, CityIn);
             Assert.True(result.Result is BadRequestObjectResult);
         }
-        [Fact]
-        public void Test_CreateCity_DomainThrowsDomainException_ReturnsNotFound() {
-            CityDTOInput CityIn = new CityDTOInput() { ContinentId = 1, CountryId = 2, Name = "testName" };
-            CityDTOutput CityOut = new CityDTOutput() { Country = "1", Name = "testName2" };
-            ApiRepo.Setup(x => x.AddCity(CityIn)).Throws(new Exception("test"));
-            var result = MockOverContinentController.PostCity(1, 2, CityIn);
-            Assert.True(result.Result is NotFoundObjectResult);
-        }
+
         [Fact]
         public void Test_CreateCity_DomainThrowsException_ReturnsBadRequest() {
             CityDTOInput CityIn = new CityDTOInput() { ContinentId = 1, CountryId = 2, Name = "testName" };
@@ -187,14 +144,7 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             Assert.True(result.Result is OkObjectResult);
             Assert.True(temp.Value.Equals(CityOut));
         }
-        [Fact]
-        public void Test_GetCity_DomainThrowsDomainExcpetion_ReturnsNotFound() {
-            CityDTOInput CityIn = new CityDTOInput() { ContinentId = 1, CountryId = 2, Name = "testName" };
-            CityDTOutput CityOut = new CityDTOutput() { Country = "1", Name = "testName2" };
-            ApiRepo.Setup(x => x.GetCityForId(3)).Throws(new Exception("test"));
-            var result = MockOverContinentController.GetCity(1, 2, 3);
-            Assert.True(result.Result is NotFoundObjectResult);
-        }
+
         [Fact]
         public void Test_GetCity_DomainThrowsExcpetion_ReturnsBadRequest() {
             CityDTOInput CityIn = new CityDTOInput() { ContinentId = 1, CountryId = 2, Name = "testName" };
@@ -202,14 +152,6 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             ApiRepo.Setup(x => x.GetCityForId(3)).Throws(new Exception("test"));
             var result = MockOverContinentController.GetCity(1, 2, 3);
             Assert.True(result.Result is BadRequestResult);
-        }
-        [Fact]
-        public void Test_DeleteCity_DomainThrowDomainException_ReturnsNotFound() {
-            CityDTOInput CityIn = new CityDTOInput() { ContinentId = 1, CountryId = 2, Name = "testName" };
-            CityDTOutput CityOut = new CityDTOutput() { Country = "1", Name = "testName2" };
-            ApiRepo.Setup(x => x.DeleteCity(3)).Throws(new Exception("test"));
-            var result = MockOverContinentController.DeleteCity(1, 2, 3);
-            Assert.True(result.Result is NotFoundObjectResult);
         }
 
         [Fact]

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\GeoServiceBusinessLayer\GeoServiceBusinessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SqlTesting\" />
+  </ItemGroup>
+
 </Project>

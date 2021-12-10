@@ -99,8 +99,8 @@ namespace GeoServiceAPI.Model {
         public CountryDTOutput UpdateCountry(CountryDTOInput countryIn) {
             Country original = countryM.GetCountryForId(countryIn.CountryId);
             original.Population = countryIn.Population;
-            Continent cont = countryM.GetContinentForId(countryIn.ContinentId);
-            if (!original.Continent.Equals(cont))
+            Continent newContinent = countryM.GetContinentForId(countryIn.ContinentId);
+            if (!original.Continent.Equals(newContinent))
                 original.Continent = countryM.GetContinentForId(countryIn.ContinentId);
             original.Name = countryIn.Name;
             original.Surface = countryIn.Surface;
@@ -120,14 +120,6 @@ namespace GeoServiceAPI.Model {
             original.SetCountries(countries);
             River result = countryM.UpdateRiver(original);
             return DTOConverter.ConvertRiverToDTOOut(result);
-        }
-
-        ContinentDTOutput IApiCompletion.GetCountryForId(int id) {
-            throw new System.NotImplementedException();
-        }
-
-        ContinentDTOutput IApiCompletion.UpdateCountry(CountryDTOInput countryIn) {
-            throw new System.NotImplementedException();
         }
     }
 }

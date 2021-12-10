@@ -51,17 +51,13 @@ namespace GeoServiceDataLayer.Repositories {
                 .FirstOrDefault();
         }
 
-        private void UpdateCityHelper(DTCity cOne, DTCity cTwo) {
-            cOne.CountryId = cTwo.CountryId;
-            cOne.Name = cTwo.Name;
-            cOne.Population = cTwo.Population;
-            cOne.Capital = cTwo.Capital;
-        }
-
         public City Update(City cityId) {
             DTCity newCity = DataConverter.ConvertCityToCityData(cityId);
             DTCity originalCity = GetDataCityForRetrievingId(cityId.Id);
-            UpdateCityHelper(newCity, originalCity);
+            originalCity.CountryId = newCity.CountryId;
+            originalCity.Name = newCity.Name;
+            originalCity.Population = newCity.Population;
+            originalCity.Capital = newCity.Capital;
             context.Cities.Update(originalCity);
             context.SaveChanges();
             return DataConverter.ConvertCityDataToCity(originalCity);

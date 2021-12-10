@@ -49,17 +49,13 @@ namespace GeoServiceDataLayer.Repositories {
                 .FirstOrDefault();
         }
 
-        private void UpdateHelper(DTCountry dataCountryOne, DTCountry dataCountryTwo) {
-            dataCountryOne.Name = dataCountryTwo.Name;
-            dataCountryOne.Population = dataCountryTwo.Population;
-            dataCountryOne.Surface = dataCountryTwo.Surface;
-            dataCountryOne.ContinentId = dataCountryTwo.ContinentId;
-        }
-
-        public Country Update(Country country) {
+        public Country Update(Country country)  {
             DTCountry DataCountry = DataConverter.ConvertCountryToDataCountry(country);
             DTCountry OriginalCountry = GetCountryForDefienedId(country.Id);
-            UpdateHelper(DataCountry, OriginalCountry);
+            OriginalCountry.Name = DataCountry.Name;
+            OriginalCountry.Population = DataCountry.Population;
+            OriginalCountry.Surface = DataCountry.Surface;
+            OriginalCountry.ContinentId = DataCountry.ContinentId;
             context.Countries.Update(OriginalCountry);
             context.SaveChanges();
             return DataConverter.ConvertCountryDataToCountry(OriginalCountry);

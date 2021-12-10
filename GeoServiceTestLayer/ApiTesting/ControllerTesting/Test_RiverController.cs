@@ -37,27 +37,6 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             Assert.True(temp.Value.Equals(rOut));
         }
         [Fact]
-        public void Test_CreateRiverTest_DomainThrowsDomainException_ReturnsNotFound() {
-            RiverDTOInput r = new RiverDTOInput();
-            RiverDTOutput rOut = new RiverDTOutput() { Name = "testName" };
-            ApiRepo.Setup(m => m.AddRiver(r)).Throws(new Exception(""));
-            var result = MockOverRiverController.PostRiver(r);
-
-
-            Assert.True(result.Result is NotFoundObjectResult);
-        }
-        [Fact]
-        public void Test_CreateRiverTest_ThrowsOtherException_ReturnsBadRequest() {
-            RiverDTOInput r = new RiverDTOInput();
-            RiverDTOutput rOut = new RiverDTOutput() { Name = "testName" };
-            ApiRepo.Setup(m => m.AddRiver(r)).Throws(new Exception(""));
-            var result = MockOverRiverController.PostRiver(r);
-
-
-            Assert.True(result.Result is BadRequestResult);
-        }
-
-        [Fact]
         public void Test_GetRiver_ReturnsCorrectValues() {
 
             RiverDTOInput r = new RiverDTOInput();
@@ -66,14 +45,6 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             var result = MockOverRiverController.GetRiver(1);
             var temp = result.Result as OkObjectResult;
             Assert.True(temp.Value.Equals(rOut));
-        }
-        [Fact]
-        public void Test_GetRiver_WithNonExistingId_Returns404() {
-            RiverDTOInput r = new RiverDTOInput();
-            RiverDTOutput rOut = new RiverDTOutput() { Name = "testName" };
-            ApiRepo.Setup(m => m.GetRiverForId(1)).Throws(new Exception("test"));
-            var result = MockOverRiverController.GetRiver(1);
-            Assert.True(result.Result is NotFoundObjectResult);
         }
 
         [Fact]
@@ -93,30 +64,6 @@ namespace GeoServiceTestLayer.ApiTesting.ControllerTesting {
             var temp = result.Result as CreatedAtActionResult;
             Assert.True(result.Result is CreatedAtActionResult);
             Assert.True(temp.Value.Equals(rOut));
-        }
-        [Fact]
-        public void TestUpdateRiver_DomainLayerThrowsDomainException_ReturnsNotFound() {
-            RiverDTOInput r = new RiverDTOInput() { RiverId = 1 };
-            RiverDTOutput rOut = new RiverDTOutput() { Name = "testName" };
-            ApiRepo.Setup(m => m.UpdateRiver(r)).Throws(new Exception("Test"));
-            var result = MockOverRiverController.PutRiver(1, r);
-            Assert.True(result.Result is NotFoundObjectResult);
-        }
-        [Fact]
-        public void TestUpdateRiver_ExceptionIsThrown_ReturnsBadRequest() {
-            RiverDTOInput r = new RiverDTOInput() { RiverId = 1 };
-            RiverDTOutput rOut = new RiverDTOutput() { Name = "testName" };
-            ApiRepo.Setup(m => m.UpdateRiver(r)).Throws(new Exception("Test"));
-            var result = MockOverRiverController.PutRiver(1, r);
-            Assert.True(result.Result is BadRequestResult);
-        }
-        [Fact]
-        public void TestDeleteRiver_DomainLayerThrowsDomainException_ReturnsNotFound() {
-            RiverDTOInput r = new RiverDTOInput() { RiverId = 1 };
-            RiverDTOutput rOut = new RiverDTOutput() { Name = "testName" };
-            ApiRepo.Setup(m => m.DeleteRiver(1)).Throws(new Exception("Test"));
-            var result = MockOverRiverController.DeleteRiver(1);
-            Assert.True(result is NotFoundObjectResult);
         }
         [Fact]
         public void TestDeleteRiver_DomainLayerThrowsException_ReturnsBadRequest() {

@@ -8,6 +8,7 @@ namespace GeoServiceAPP {
         static void Main(string[] args) {
             DataAcces DA = new DataAcces("Test");
             CountryManager cg = new CountryManager(DA);
+
         }
     }
 }
