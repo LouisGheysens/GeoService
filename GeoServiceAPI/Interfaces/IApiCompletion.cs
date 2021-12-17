@@ -15,15 +15,11 @@ namespace GeoServiceAPI.Interfaces {
         CountryDTOutput UpdateCountry(CountryDTOInput countryIn);
         CountryDTOutput AddCountry(CountryDTOInput country);
         void DeleteCountry(int countryId);
-
         CityDTOutput AddCity(CityDTOInput city);
         CityDTOutput GetCityForId(int id);
         void DeleteCity(int cityId);
         CityDTOutput UpdateCity(CityDTOInput city);
-
-
         RiverDTOutput AddRiver(RiverDTOInput rivier);
-
         RiverDTOutput GetRiverForId(int id);
         void DeleteRiver(int id);
         RiverDTOutput UpdateRiver(RiverDTOInput rivier);

@@ -13,7 +13,7 @@ namespace GeoServiceBusinessLayer.Models {
             SetCountries(countries);
         }
         #endregion
-
+         
         public void SetCountries(List<Country> countries) {
             if (countries == null || countries.Count < 1)
                 throw new RiverException("River: River must belong to at least one country");

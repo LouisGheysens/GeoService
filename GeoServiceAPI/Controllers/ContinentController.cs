@@ -157,7 +157,7 @@ namespace GeoServiceAPI.Controllers {
                     CityDTOutput result = ApiComplete.AddCity(city);
                     return CreatedAtAction(nameof(PostCity), result);
                 }
-                catch (Exception) {
+                catch (Exception ex) {
                     return BadRequest();
                 }
             }
