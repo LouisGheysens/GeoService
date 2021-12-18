@@ -39,17 +39,12 @@ namespace GeoServiceDataLayer.Repositories {
                 return DataConverter.ConvertRiverDataToRiver(dt);
         }
 
-        //Hulp methode update
-        public void UpdateRiverHelper(DTRiver first, DTRiver second) {
-            first.CountryLink = second.CountryLink;
-            first.Length = second.Length;
-            first.Name = second.Name;
-        }
-
         public River UpdateRiver(River river) {
             DTRiver dt = DataConverter.ConvertRiverToRiverData(river);
             DTRiver original = context.Rivers.Find(dt.Id);
-            UpdateRiverHelper(dt, original);
+            original.CountryLink = dt.CountryLink;
+            original.Length = dt.Length;
+            original.Name = dt.Name;
             context.Rivers.Update(original);
             context.SaveChanges();
             return DataConverter.ConvertRiverDataToRiver(original);

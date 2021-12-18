@@ -75,3 +75,4 @@ C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.dll
 C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\ref\GeoServiceAPP.dll
 C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.pdb
 C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.genruntimeconfig.cache
+C:\Users\Eigenaar\GeoService\GeoServiceAPP\obj\Debug\net5.0\GeoServiceAPP.csproj.CopyComplete

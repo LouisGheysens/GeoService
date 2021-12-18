@@ -15,3 +15,4 @@ C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceData
 C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\ref\GeoServiceDataLayer.dll
 C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.pdb
 C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.genruntimeconfig.cache
+C:\Users\Eigenaar\GeoService\GeoServiceDataLayer\obj\Debug\net5.0\GeoServiceDataLayer.csproj.CopyComplete
